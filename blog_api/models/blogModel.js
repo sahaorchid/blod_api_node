@@ -1,7 +1,7 @@
 let blogs= require('../data/blogdata.json')
 let utils= require('../utils')
 
-let incr=1;
+
 function fetchAll(){
     return new Promise((resolve, reject)=>{
         resolve(blogs)
@@ -9,16 +9,22 @@ function fetchAll(){
 
 }
 
+function fetchLast(){
+    return new Promise((resolve, reject)=>{
+        if(blogs.length==0){
+            resolve(0)
+        }
+        else{
+            resolve(blogs[blogs.length-1].id)
+        }
+    })
+
+}
+
 function addBlogData(data){
     return new Promise((resolve, reject)=>{
         try{
-            if(incr==0){
-                blogs.push({id:1,...data})
-            }
-            else{
-                incr+=1
-                blogs.push({id:incr+1,...data})    
-            }
+            blogs.push(data)
             utils.writeFile(blogs)
             resolve({message:"data saved successfully"})
         }catch{
@@ -30,4 +36,5 @@ function addBlogData(data){
 module.exports={
     fetchAll,
     addBlogData,
+    fetchLast
 }
